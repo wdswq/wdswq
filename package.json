@@ -1,0 +1,17 @@
+{
+  "name": "monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter frontend dev",
+    "build": "pnpm --filter frontend build",
+    "test": "pnpm --filter frontend test",
+    "lint": "pnpm --filter frontend lint"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5"
+  }
+}
