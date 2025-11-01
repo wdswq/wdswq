@@ -1,0 +1,22 @@
+{
+  "name": "infra-docker-compose",
+  "version": "1.0.0",
+  "description": "Docker Compose infrastructure setup for development",
+  "private": true,
+  "scripts": {
+    "infra:init": "node scripts/init.js",
+    "infra:up": "cd infra && docker compose up -d",
+    "infra:down": "cd infra && docker compose down",
+    "infra:logs": "cd infra && docker compose logs -f",
+    "infra:status": "cd infra && docker compose ps",
+    "infra:clean": "cd infra && docker compose down -v --remove-orphans",
+    "infra:logs:postgres": "cd infra && docker compose logs -f postgres",
+    "infra:logs:qdrant": "cd infra && docker compose logs -f qdrant",
+    "infra:logs:minio": "cd infra && docker compose logs -f minio"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=7"
+  }
+}
