@@ -1,0 +1,39 @@
+{
+  "name": "monorepo",
+  "version": "1.0.0",
+  "description": "Full-stack application with Docker Compose infrastructure",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "test:unit": "pnpm -r test",
+    "test:integration": "pnpm --filter backend test:e2e",
+    "test:e2e": "pnpm --filter frontend test:e2e",
+    "test:all": "pnpm test:unit && pnpm test:integration && pnpm test:e2e",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write .",
+    "infra:init": "node scripts/init.js",
+    "infra:up": "cd infra && docker compose up -d",
+    "infra:down": "cd infra && docker compose down",
+    "infra:logs": "cd infra && docker compose logs -f",
+    "infra:status": "cd infra && docker compose ps",
+    "infra:clean": "cd infra && docker compose down -v --remove-orphans",
+    "infra:logs:postgres": "cd infra && docker compose logs -f postgres",
+    "infra:logs:qdrant": "cd infra && docker compose logs -f qdrant",
+    "infra:logs:minio": "cd infra && docker compose logs -f minio"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5",
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+}
