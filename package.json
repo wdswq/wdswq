@@ -1,9 +1,16 @@
 {
-  "name": "infra-docker-compose",
+  "name": "monorepo",
   "version": "1.0.0",
-  "description": "Docker Compose infrastructure setup for development",
+  "description": "Full-stack application with Docker Compose infrastructure",
   "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
+    "dev": "pnpm --filter frontend dev",
+    "build": "pnpm --filter frontend build",
+    "test": "pnpm --filter frontend test",
+    "lint": "pnpm --filter frontend lint",
     "infra:init": "node scripts/init.js",
     "infra:up": "cd infra && docker compose up -d",
     "infra:down": "cd infra && docker compose down",
@@ -14,7 +21,10 @@
     "infra:logs:qdrant": "cd infra && docker compose logs -f qdrant",
     "infra:logs:minio": "cd infra && docker compose logs -f minio"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5"
+  },
   "engines": {
     "node": ">=16",
     "pnpm": ">=7"
