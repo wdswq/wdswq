@@ -7,10 +7,11 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "pnpm --filter frontend dev",
-    "build": "pnpm --filter frontend build",
-    "test": "pnpm --filter frontend test",
-    "lint": "pnpm --filter frontend lint",
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write .",
     "infra:init": "node scripts/init.js",
     "infra:up": "cd infra && docker compose up -d",
     "infra:down": "cd infra && docker compose down",
@@ -23,10 +24,12 @@
   },
   "devDependencies": {
     "@types/node": "^20",
-    "typescript": "^5"
+    "typescript": "^5",
+    "prettier": "^3.0.0"
   },
   "engines": {
-    "node": ">=16",
-    "pnpm": ">=7"
-  }
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
 }
