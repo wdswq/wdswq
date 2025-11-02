@@ -1,65 +1,98 @@
 'use client'
 
 import { useState } from 'react'
+import { ArrowLeft, Library } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { FileUploader } from '@/components/file-uploader'
+import { useLibraryStore } from '@/store/library-store'
 
 export default function UploadPage() {
-  const [isDragging, setIsDragging] = useState(false)
+  const { uploadQueue } = useLibraryStore()
+  const [showSuccess, setShowSuccess] = useState(false)
+
+  const handleUploadComplete = () => {
+    setShowSuccess(true)
+    setTimeout(() => setShowSuccess(false), 3000)
+  }
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Upload</h1>
-        <p className="text-muted-foreground">
-          Upload new content to your library.
-        </p>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Upload</h1>
+          <p className="text-muted-foreground">
+            Upload new content to your library.
+          </p>
+        </div>
+        <Button variant="outline" asChild>
+          <a href="/library">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Library
+          </a>
+        </Button>
       </div>
 
-      <div className="bg-card p-6 rounded-lg border">
-        <div
-          className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
-            isDragging
-              ? 'border-primary bg-primary/5'
-              : 'border-muted-foreground/25 hover:border-muted-foreground/50'
-          }`}
-          onDragOver={(e) => {
-            e.preventDefault()
-            setIsDragging(true)
-          }}
-          onDragLeave={() => setIsDragging(false)}
-          onDrop={(e) => {
-            e.preventDefault()
-            setIsDragging(false)
-            // Handle file drop here
-          }}
-        >
-          <div className="space-y-4">
-            <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-muted-foreground"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                />
-              </svg>
+      {/* Success Message */}
+      {showSuccess && (
+        <Card className="border-green-200 bg-green-50">
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2 text-green-800">
+              <Library className="h-5 w-5" />
+              <span>Files uploaded successfully! Check your library.</span>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* File Uploader */}
+      <FileUploader onUploadComplete={handleUploadComplete} />
+
+      {/* Upload Queue Summary */}
+      {uploadQueue.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Upload Queue</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-sm text-muted-foreground">
+              {uploadQueue.filter(f => f.status === 'completed').length} completed,{' '}
+              {uploadQueue.filter(f => f.status === 'uploading' || f.status === 'processing').length} in progress,{' '}
+              {uploadQueue.filter(f => f.status === 'failed').length} failed
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Help Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Upload Tips</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h4 className="font-medium mb-2">Supported File Types</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• Documents: PDF, DOC, DOCX, TXT</li>
+                <li>• Images: JPG, PNG, GIF, SVG</li>
+                <li>• Videos: MP4, AVI, MOV</li>
+                <li>• Audio: MP3, WAV, FLAC</li>
+              </ul>
             </div>
             <div>
-              <p className="text-lg font-medium">Drop files here</p>
-              <p className="text-sm text-muted-foreground">
-                or click to browse
-              </p>
+              <h4 className="font-medium mb-2">Best Practices</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• Use descriptive filenames</li>
+                <li>• Add relevant tags for easy searching</li>
+                <li>• Organize files into appropriate categories</li>
+                <li>• Keep file sizes under 100MB for faster processing</li>
+              </ul>
             </div>
-            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
-              Choose Files
-            </button>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

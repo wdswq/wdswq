@@ -12,7 +12,7 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set) => ({
-  user: null,
+  user: { id: null, name: null, email: null },
   theme: 'light',
   setUser: (user) => set({ user }),
   setTheme: (theme) => set({ theme }),
